@@ -1,0 +1,8 @@
+.tablecontainer {
+  margin: 2rem;
+    max-width: 70rem;
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; 
+  }
