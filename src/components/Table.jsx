@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchItems } from "../redux/Slices/ApiDataSlice"
+import { fetchItems } from "../redux/Slices/ApiDataSlice";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -15,20 +15,22 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
-const TableDetails = ({searchInput}) => {
+const TableDetails = ({ searchInput }) => {
   const [rows, setRows] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const dispatch = useDispatch();
-  const {selectedItem}=useSelector((state=>(state.delete)))
+  const { selectedItem } = useSelector((state) => state.delete);
   const [currentPage, setCurrentPage] = useState(1);
   const recordsPerPage = 10;
 
   const filter = () => {
     if (searchInput.trim() === "") {
-      setRows(originalData); 
+      setRows(originalData);
     } else {
-      const filteredData = originalData.filter((row) =>
-        row.email.toLowerCase().includes(searchInput.toLowerCase())  || row.name.toLowerCase().includes(searchInput.toLowerCase())
+      const filteredData = originalData.filter(
+        (row) =>
+          row.email.toLowerCase().includes(searchInput.toLowerCase()) ||
+          row.name.toLowerCase().includes(searchInput.toLowerCase())
       );
       setRows(filteredData);
     }
@@ -44,7 +46,7 @@ const TableDetails = ({searchInput}) => {
         if (fetchItems.fulfilled.match(action)) {
           const { payload } = action;
           setOriginalData(payload);
-          setRows(payload.slice(0, recordsPerPage)); 
+          setRows(payload.slice(0, recordsPerPage));
         }
       })
       .catch((error) => {
@@ -65,10 +67,9 @@ const TableDetails = ({searchInput}) => {
   const prevPage = () => {
     setCurrentPage(currentPage - 1);
   };
-  const changeCPage=(id)=>{
+  const changeCPage = (id) => {
     setCurrentPage(id);
-       
-  }
+  };
 
   const deleteSeleceted = () => {
     if (selectedItem) {
@@ -78,11 +79,10 @@ const TableDetails = ({searchInput}) => {
     }
   };
 
-  
   const firstIndex = (currentPage - 1) * recordsPerPage;
   const lastIndex = firstIndex + recordsPerPage;
-  const npage=Math.ceil(rows.length/recordsPerPage);
-  const numbers=[...Array(npage+1).keys()].slice(1);
+  const npage = Math.ceil(rows.length / recordsPerPage);
+  const numbers = [...Array(npage + 1).keys()].slice(1);
 
   return (
     <div className="tablecontainer">
@@ -105,21 +105,22 @@ const TableDetails = ({searchInput}) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.slice(firstIndex,lastIndex).map((row) => (
+              {rows.slice(firstIndex, lastIndex).map((row) => (
                 <TableContent data={row} key={row.id} onDelete={handleDelete} />
               ))}
             </TableBody>
           </Table>
         </TableContainer>
       )}
-      <Pagination  
-   firstIndex={firstIndex}
-   lastIndex={lastIndex}
-   onNextPage={nextPage}
-   onPrevPage={prevPage}
-   changeCPage={changeCPage}
-   numbers={numbers}/>
-   <button onClick={()=>deleteSeleceted()}>delete selected</button>
+      <Pagination
+        firstIndex={firstIndex}
+        lastIndex={lastIndex}
+        onNextPage={nextPage}
+        onPrevPage={prevPage}
+        changeCPage={changeCPage}
+        numbers={numbers}
+      />
+      <button onClick={() => deleteSeleceted()}>delete selected</button>
     </div>
   );
 };

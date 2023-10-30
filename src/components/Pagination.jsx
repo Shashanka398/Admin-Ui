@@ -1,11 +1,7 @@
 import React, { useState } from 'react'
 
 const Pagination = ({ currentPage, endPage, onNextPage, onPrevPage ,numbers,changeCPage }) => {
-
-
-
-
-
+  
   return (
     <div>
       <button onClick={()=>{
